@@ -130,43 +130,51 @@ to restrict authenticated operations.
 
 ## API Endpoints
 
-### Users
+### User Authentication
 
-| Method | Endpoint               | Description   |
-| ------ | ---------------------- | ------------- |
-| POST   | `/api/users/register/` | Register user |
-| POST   | `/api/users/login/`    | Login user    |
+| Method | Endpoint                   | Description                 |
+| ------ | -------------------------- | --------------------------- |
+| POST   | `/api/user/register/`      | Register a new user         |
+| POST   | `/api/user/login/`         | Login and obtain JWT tokens |
+| POST   | `/api/user/login/refresh/` | Refresh access token        |
+| GET    | `/api/user/profile/`       | View user profile           |
+| POST   | `/api/user/logout/`        | Logout user                 |
 
 ### Products
 
-| Method | Endpoint                              | Description           |
-| ------ | ------------------------------------- | --------------------- |
-| GET    | `/api/products/`                      | List products         |
-| POST   | `/api/products/`                      | Create product        |
-| GET    | `/api/products/?category=Electronics` | Filter products       |
-| GET    | `/api/products/?ordering=price`       | Sort by price         |
-| GET    | `/api/products/?ordering=-price`      | Sort high to low      |
-| GET    | `/api/products/?is_prime=true`        | Access Prime products |
+| Method | Endpoint              | Description                |
+| ------ | --------------------- | -------------------------- |
+| GET    | `/api/products/`      | List products              |
+| POST   | `/api/products/`      | Create a product           |
+| GET    | `/api/products/<id>/` | View product details       |
+| PUT    | `/api/products/<id>/` | Update a product           |
+| PATCH  | `/api/products/<id>/` | Partially update a product |
+| DELETE | `/api/products/<id>/` | Delete a product           |
 
 ### Cart
 
-| Method | Endpoint     | Description      |
-| ------ | ------------ | ---------------- |
-| GET    | `/api/cart/` | View cart        |
-| POST   | `/api/cart/` | Add item to cart |
-| PATCH  | `/api/cart/` | Update cart item |
-| DELETE | `/api/cart/` | Remove cart item |
+| Method | Endpoint           | Description         |
+| ------ | ------------------ | ------------------- |
+| GET    | `/api/cart/`       | View user's cart    |
+| POST   | `/api/add/`        | Add product to cart |
+| PATCH  | `/api/items/<id>/` | Update cart item    |
+| DELETE | `/api/items/<id>/` | Remove cart item    |
 
 ### Orders
 
-| Method | Endpoint                | Description             |
-| ------ | ----------------------- | ----------------------- |
-| GET    | `/api/orders/`          | View user orders        |
-| POST   | `/api/orders/checkout/` | Checkout selected items |
+| Method | Endpoint                         | Description                     |
+| ------ | -------------------------------- | ------------------------------- |
+| POST   | `/api/orders/`                   | Create an order from cart items |
+| GET    | `/api/orders/<order_id>/`        | View order details              |
+| POST   | `/api/orders/<order_id>/cancel/` | Cancel an order                 |
 
 ### Payments
 
-Payment APIs are used to create and manage payments associated with orders.
+| Method | Endpoint                             | Description           |
+| ------ | ------------------------------------ | --------------------- |
+| POST   | `/api/payments/`                     | Create a payment      |
+| GET    | `/api/payments/<payment_id>/`        | View payment details  |
+| PATCH  | `/api/payments/<payment_id>/status/` | Update payment status |
 
 ## Installation & Setup
 
