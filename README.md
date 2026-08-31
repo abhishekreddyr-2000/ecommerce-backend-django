@@ -4,7 +4,7 @@ E-Commerce Backend API
 
 ## Objective
 
-To build a secure and scalable **E-Commerce Backend REST API** using Django and Django REST Framework (DRF), covering user authentication, products, cart, checkout, orders, and payments.
+To build a RESTful E-Commerce Backend API using Django and Django REST Framework (DRF), implementing user authentication, product management, cart operations, checkout, orders, and payments.
 
 ## Project Description
 
@@ -26,8 +26,8 @@ The application manages the complete basic shopping flow:
 * Add, update, and remove cart items
 * Checkout selected cart items
 * Order and order-item management
-* Order status management
-* Payment management
+* Order status and cancellation management
+* Payment management and validation
 * Validation for cancelled and already-processed payments
 
 ## Tech Stack
@@ -40,35 +40,38 @@ The application manages the complete basic shopping flow:
 * **Filtering:** django-filter
 * **CORS:** django-cors-headers
 * **Version Control:** Git & GitHub
+* **API Testing:** Postman
+* **Configuration:** python-dotenv
 
 ## Project Architecture
 
 ```text
 ecommerce/
-│
-├── User/
-├── products/
-├── cart/
-├── orders/
-├── payments/
-├── ecommerce/
-│
-├── manage.py
-├── requirements.txt
-├── README.md
-└── .gitignore
+|
+|-- User/
+|-- products/
+|-- cart/
+|-- orders/
+|-- payments/
+|-- ecommerce/
+|
+|-- manage.py
+|-- requirements.txt
+|-- README.md
+|-- .gitignore
 ```
 
 ### Applications
 
-| App       | Responsibility                      |
-| --------- | ----------------------------------- |
-| User      | Registration, login, authentication |
-| Products  | Product management and filtering    |
-| Cart      | Shopping cart management            |
-| Orders    | Checkout and order management       |
-| Payments  | Payment processing and validation   |
-| Ecommerce | Project configuration and URLs      |
+| App       | Responsibility                                            |
+| --------- | --------------------------------------------------------- |
+| User      | User registration, authentication, profile, and logout    |
+| products  | Product management, filtering, sorting, and pagination    |
+| cart      | User shopping cart and cart item management               |
+| orders    | Checkout, order creation, order details, and cancellation |
+| payments  | Payment creation, status management, and validation       |
+| ecommerce | Project configuration, settings, and main URL routing     |
+
 
 ## Database Design
 
@@ -76,25 +79,28 @@ Main models and relationships:
 
 ```text
 User
- │
- ├── Cart
- │     └── CartItem ─── Product
- │
- └── Order
-       └── OrderItem ─── Product
-              │
-              └── Payment
+|
+|-- Cart
+|   |
+|   |-- CartItem ---> Product
+|
+|-- Order
+    |
+    |-- OrderItem ---> Product
+    |
+    |-- Payment
 ```
 
 ### Main Models
 
-* **User** – Stores customer/seller information.
-* **Product** – Stores product details and seller information.
-* **Cart** – One-to-one relationship with User.
-* **CartItem** – Connects products with a user's cart.
-* **Order** – Stores order information and status.
-* **OrderItem** – Stores products, quantities, and prices for an order.
-* **Payment** – Stores payment method, status, amount, and order.
+* **User** - Stores user information, including customer and seller user types.
+* **Product** - Stores product details and seller information.
+* **Cart** - Stores the shopping cart associated with a user.
+* **CartItem** - Connects products with a user's cart and stores quantity.
+* **Order** - Stores order information, total amount, and order status.
+* **OrderItem** - Stores products, quantities, and product prices for an order.
+* **Payment** - Stores payment method, payment status, amount, and the associated order.
+
 
 ## Authentication & Authorization
 
@@ -181,19 +187,19 @@ to restrict authenticated operations.
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repository-url>
-cd ecommerce
+git clone https://github.com/abhishekreddyr-2000/ecommerce-backend-django.git
+cd ecommerce-backend-django
 ```
 
-### 2. Create Virtual Environment
+### 2. Create a Virtual Environment
 
 ```bash
 python -m venv env
 ```
 
-### 3. Activate Virtual Environment
+### 3. Activate the Virtual Environment
 
-Windows:
+Windows PowerShell:
 
 ```powershell
 .\env\Scripts\Activate.ps1
@@ -205,18 +211,31 @@ Windows:
 pip install -r requirements.txt
 ```
 
-### 5. Run Migrations
+### 5. Configure Environment Variables
+
+Create a `.env` file in the project root:
+
+```text
+SECRET_KEY=your-django-secret-key
+```
+
+You can generate a Django secret key using:
+
+```bash
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
+
+### 6. Run Database Migrations
 
 ```bash
 python manage.py migrate
 ```
 
-### 6. Create Superuser
+### 7. Create a Superuser
 
 ```bash
 python manage.py createsuperuser
 ```
-
 ## How to Run the Project
 
 Start the Django development server:
@@ -233,15 +252,15 @@ http://127.0.0.1:8000/
 
 APIs can be tested using **Postman** or any API client.
 
+
 ## Testing
 
-The APIs can be tested using:
+API functionality was tested using:
 
 * Postman
 * Django REST Framework browsable API
-* Django test framework
 
-Testing includes:
+The following scenarios were tested:
 
 * User registration and login
 * JWT authentication
@@ -251,6 +270,7 @@ Testing includes:
 * Order creation
 * Payment validation
 * Protected API access
+
 
 ## Future Enhancements
 
@@ -266,7 +286,7 @@ Testing includes:
 
 ## Learning Outcomes
 
-Through this project, I gained practical experience in:
+This project provided practical experience in:
 
 * Python and Django
 * Django REST Framework
