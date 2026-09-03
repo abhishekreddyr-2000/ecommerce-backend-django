@@ -3,9 +3,9 @@ from .models import User
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
-        model=User
+        model = User
         fields=['username','password','email','user_type']
-        extra_kwargs={'password':{'write_only':True}} # to hide the password
+        extra_kwargs={'password':{'write_only':True}} 
 
     def create(self,validated_data):
-        return User.objects.create_user(**validated_data)        
+        return User.objects.create_user(**validated_data)    # to hide the password    

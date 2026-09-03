@@ -31,12 +31,14 @@ class AddToCartView(APIView):
         )
 
 class CartItemDetailView(APIView):
+    permission_classes = [IsAuthenticated]
     def patch(self,request,pk):
         item=CartItem.objects.get(pk=pk)
         item.quantity=request.data.get('quantity',item.quantity)
         item.save()
         return Response(CartItemSerializer(item).data)
     def delete(self,request,pk):
-        CartItem.objects.get(pk=pk)
-        return Response(status=204)
+        item = CartItem.objects.get(pk=pk)
+        item.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 

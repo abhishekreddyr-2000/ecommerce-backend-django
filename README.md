@@ -202,7 +202,7 @@ python -m venv env
 Windows PowerShell:
 
 ```powershell
-.\env\Scripts\Activate.ps1
+..\env\Scripts\Activate.ps1
 ```
 
 ### 4. Install Dependencies

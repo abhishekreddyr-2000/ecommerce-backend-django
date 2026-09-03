@@ -34,7 +34,7 @@ class OrderItem(models.Model):
 
     product = models.ForeignKey(
         'products.Product',
-        on_delete=models.CASCADE
+        on_delete=models.PROTECT
     )
 
     quantity = models.PositiveIntegerField()

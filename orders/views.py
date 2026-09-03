@@ -8,6 +8,7 @@ from rest_framework import status
 from .models import Order, OrderItem
 from .serializers import OrderSerializer, CheckoutSerializer
 from cart.models import Cart, CartItem
+from decimal import Decimal
 
 
 class CheckoutAPIView(APIView):
@@ -21,35 +22,23 @@ class CheckoutAPIView(APIView):
         ).order_by('-created_at')
 
         # Convert orders into JSON
-        serializer = OrderSerializer(
-            orders,
-            many=True
-        )
+        serializer = OrderSerializer(orders,many=True)
 
         # Return the user's orders
-        return Response(
-            serializer.data,
-            status=status.HTTP_200_OK
-        )
+        return Response(serializer.data,status=status.HTTP_200_OK)
 
     def post(self, request):
         # Validate the selected cart items
-        checkout_serializer = CheckoutSerializer(
-            data=request.data
-        )
+        checkout_serializer = CheckoutSerializer(data=request.data)
 
         # Stop if the request data is invalid
-        checkout_serializer.is_valid(
-            raise_exception=True
-        )
+        checkout_serializer.is_valid(raise_exception=True)
 
         # Get the selected items from validated data
         selected_items = checkout_serializer.validated_data['items']
 
         # Get the logged-in user's cart
-        cart = Cart.objects.filter(
-            user=request.user
-        ).first()
+        cart = Cart.objects.filter(user=request.user).first()
 
         # Check whether the cart exists
         if not cart:
@@ -62,7 +51,7 @@ class CheckoutAPIView(APIView):
         order_items_data = []
 
         # Start the total amount
-        total_amount = 0
+        total_amount = Decimal('0.00')
 
         # Validate every selected cart item
         for selected_item in selected_items:
@@ -72,10 +61,7 @@ class CheckoutAPIView(APIView):
             requested_quantity = selected_item['quantity']
 
             # Find the cart item inside this user's cart
-            cart_item = CartItem.objects.filter(
-                id=cart_item_id,
-                cart=cart
-            ).first()
+            cart_item = CartItem.objects.filter(id=cart_item_id,cart=cart).first()
 
             # Check whether the cart item exists
             if not cart_item:
@@ -150,10 +136,7 @@ class CheckoutAPIView(APIView):
         serializer = OrderSerializer(order)
 
         # Return the created order
-        return Response(
-            serializer.data,
-            status=status.HTTP_201_CREATED
-        )
+        return Response(serializer.data,status=status.HTTP_201_CREATED)
 
 
 class OrderDetailAPIView(APIView):
@@ -178,10 +161,7 @@ class OrderDetailAPIView(APIView):
         serializer = OrderSerializer(order)
 
         # Return the order details
-        return Response(
-            serializer.data,
-            status=status.HTTP_200_OK
-        )
+        return Response(serializer.data,status=status.HTTP_200_OK)
 
 
 class CancelOrderAPIView(APIView):
@@ -224,7 +204,4 @@ class CancelOrderAPIView(APIView):
         serializer = OrderSerializer(order)
 
         # Return the cancelled order
-        return Response(
-            serializer.data,
-            status=status.HTTP_200_OK
-        )
+        return Response(serializer.data,status=status.HTTP_200_OK)

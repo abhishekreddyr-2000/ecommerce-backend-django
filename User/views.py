@@ -14,15 +14,11 @@ class RegisterView(APIView):
        return Response(serializer.errors,status=400)
 
 class MyProfileView(APIView):
-    #permission_classes=[IsAuthenticated]
-    def get(self,request):
-        #we are verifying whether that user is Authenticated or not
-        if not request.user.is_authenticated:
-            return Response({"message":"Not Authenticated"},status=401)
-        
-        #if he is Authenticated we will execute this below code
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
         return Response({
-            "username":request.user.username,
+            "username": request.user.username,
         })
 
 class LogoutView(APIView):
@@ -30,6 +26,6 @@ class LogoutView(APIView):
     def post(self,request):
         try:
             RefreshToken(request.data['refresh']).blacklist()
-        except:
+        except Exception:
             return Response({'detail':"Bad Token"},status=400)
         return Response({"detail":"Logged Out Successfully"},status=205)    
