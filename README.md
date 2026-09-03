@@ -180,7 +180,7 @@ to restrict authenticated operations.
 | ------ | ------------------------------------ | --------------------- |
 | POST   | `/api/payments/`                     | Create a payment      |
 | GET    | `/api/payments/<payment_id>/`        | View payment details  |
-| PATCH  | `/api/payments/<payment_id>/status/` | Update payment status |
+| POST   | `/api/payments/<payment_id>/status/` | Update payment status |
 
 ## Installation & Setup
 
