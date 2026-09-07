@@ -14,6 +14,12 @@ The application manages the complete basic shopping flow:
 
 **User → Products → Cart → Checkout → Order → Payment**
 
+## Live API
+
+Base URL:
+
+https://ecommerce-backend-django-lw1t.onrender.com
+
 ## Features
 
 * User registration and login
@@ -36,7 +42,10 @@ The application manages the complete basic shopping flow:
 * **Framework:** Django
 * **API:** Django REST Framework
 * **Authentication:** Simple JWT
-* **Database:** SQLite
+* **Database:** PostgreSQL (Production), SQLite (Local Development)
+* **Deployment:** Render
+* **Static Files:** WhiteNoise
+* **WSGI Server:** Gunicorn
 * **Filtering:** django-filter
 * **CORS:** django-cors-headers
 * **Version Control:** Git & GitHub
@@ -56,9 +65,10 @@ ecommerce/
 |-- ecommerce/
 |
 |-- manage.py
+|-- .gitignore
+|-- .env.example
 |-- requirements.txt
 |-- README.md
-|-- .gitignore
 ```
 
 ### Applications
@@ -170,6 +180,7 @@ to restrict authenticated operations.
 
 | Method | Endpoint                         | Description                     |
 | ------ | -------------------------------- | ------------------------------- |
+| GET    | `/api/orders/`                   | View all orders of the logged-in user |
 | POST   | `/api/orders/`                   | Create an order from cart items |
 | GET    | `/api/orders/<order_id>/`        | View order details              |
 | POST   | `/api/orders/<order_id>/cancel/` | Cancel an order                 |
@@ -202,7 +213,7 @@ python -m venv env
 Windows PowerShell:
 
 ```powershell
-..\env\Scripts\Activate.ps1
+.\env\Scripts\Activate.ps1
 ```
 
 ### 4. Install Dependencies
@@ -213,17 +224,14 @@ pip install -r requirements.txt
 
 ### 5. Configure Environment Variables
 
-Create a `.env` file in the project root:
+Create a `.env` file in the project root.
 
-```text
-SECRET_KEY=your-django-secret-key
-```
+Use `.env.example` as a template and replace the placeholder values with your local values.
 
-You can generate a Django secret key using:
+Generate a Django secret key using:
 
 ```bash
 python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
-```
 
 ### 6. Run Database Migrations
 
@@ -252,6 +260,17 @@ http://127.0.0.1:8000/
 
 APIs can be tested using **Postman** or any API client.
 
+## Deployment
+
+The application is deployed on Render.
+
+Production setup includes:
+
+* Django application served using Gunicorn
+* PostgreSQL database for persistent production data
+* WhiteNoise for static file handling
+* Environment variables for sensitive configuration
+* `DEBUG=False` in production
 
 ## Testing
 
@@ -275,14 +294,12 @@ The following scenarios were tested:
 ## Future Enhancements
 
 * Razorpay payment gateway integration
-* PostgreSQL database
 * Product reviews and ratings
 * Wishlist
 * Coupons and discounts
 * Seller dashboard
 * Email notifications
 * Swagger/OpenAPI documentation
-* Production deployment
 
 ## Learning Outcomes
 

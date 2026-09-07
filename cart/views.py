@@ -4,6 +4,8 @@ from.models import Cart,CartItem
 from.serializers import CartItemSerializer,CartSerializer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+
 
 class CartView(APIView):
     permission_classes=[IsAuthenticated]
@@ -33,12 +35,14 @@ class AddToCartView(APIView):
 class CartItemDetailView(APIView):
     permission_classes = [IsAuthenticated]
     def patch(self,request,pk):
-        item=CartItem.objects.get(pk=pk)
+        item = get_object_or_404(CartItem,pk=pk,
+        cart__user=request.user)
         item.quantity=request.data.get('quantity',item.quantity)
         item.save()
         return Response(CartItemSerializer(item).data)
     def delete(self,request,pk):
-        item = CartItem.objects.get(pk=pk)
+        item = get_object_or_404(CartItem,pk=pk,
+        cart__user=request.user)
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
